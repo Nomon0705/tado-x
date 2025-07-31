@@ -134,3 +134,135 @@ async def _async_update_listener(hass: HomeAssistant, entry: ConfigEntry) -> Non
 async def async_unload_entry(hass: HomeAssistant, entry: TadoConfigEntry) -> bool:
     """Unload a config entry."""
     return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
+
+
+
+
+
+
+# """Support for the (unofficial) Tado API."""
+
+# from datetime import timedelta
+# import logging
+
+# import requests.exceptions
+
+# from homeassistant.config_entries import ConfigEntry
+# from homeassistant.const import CONF_PASSWORD, CONF_USERNAME, Platform
+# from homeassistant.core import HomeAssistant, callback
+# from homeassistant.exceptions import ConfigEntryNotReady
+# from homeassistant.helpers import config_validation as cv
+# from homeassistant.helpers.event import async_track_time_interval
+
+# from .const import (
+#     CONF_FALLBACK,
+#     CONST_OVERLAY_MANUAL,
+#     CONST_OVERLAY_TADO_DEFAULT,
+#     CONST_OVERLAY_TADO_MODE,
+#     CONST_OVERLAY_TADO_OPTIONS,
+#     DOMAIN,
+# )
+# from .services import setup_services
+# from .tado_connector import TadoConnector
+
+# _LOGGER = logging.getLogger(__name__)
+
+# PLATFORMS = [
+#     Platform.BINARY_SENSOR,
+#     Platform.CLIMATE,
+#     Platform.DEVICE_TRACKER,
+#     Platform.SENSOR,
+#     Platform.WATER_HEATER,
+# ]
+
+# # Define update intervals
+# MIN_TIME_BETWEEN_UPDATES = timedelta(minutes=4)
+# SCAN_INTERVAL = timedelta(minutes=5)
+# SCAN_MOBILE_DEVICE_INTERVAL = timedelta(seconds=30)
+
+# # Schema for configuration validation
+# CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
+
+
+# async def async_setup(hass: HomeAssistant, config: dict) -> bool:
+#     """Initial setup of Tado component."""
+#     setup_services(hass)
+#     return True
+
+
+# TadoConfigEntry = ConfigEntry[TadoConnector]
+
+
+# async def async_setup_entry(hass: HomeAssistant, entry: TadoConfigEntry) -> bool:
+#     """Set up Tado from a config entry."""
+#     _import_options_if_missing(hass, entry)
+
+#     username = entry.data[CONF_USERNAME]
+#     password = entry.data[CONF_PASSWORD]
+#     fallback = entry.options.get(CONF_FALLBACK, CONST_OVERLAY_TADO_DEFAULT)
+
+#     connector = TadoConnector(hass, username, password, fallback)
+
+#     try:
+#         await hass.async_add_executor_job(connector.setup)
+#     except KeyError:
+#         _LOGGER.error("Failed to login to Tado")
+#         return False
+#     except RuntimeError as exc:
+#         _LOGGER.error("Failed to setup Tado: %s", exc)
+#         return False
+#     except requests.exceptions.Timeout as ex:
+#         raise ConfigEntryNotReady from ex
+#     except requests.exceptions.HTTPError as ex:
+#         if 400 < ex.response.status_code < 500:
+#             _LOGGER.error("Failed to login to Tado: %s", ex)
+#             return False
+#         raise
+
+#     # Initial data update
+#     await hass.async_add_executor_job(connector.update)
+
+#     # Schedule periodic updates
+#     entry.async_on_unload(
+#         async_track_time_interval(hass, lambda now: connector.update(), SCAN_INTERVAL)
+#     )
+#     entry.async_on_unload(
+#         async_track_time_interval(hass, lambda now: connector.update_mobile_devices(), SCAN_MOBILE_DEVICE_INTERVAL)
+#     )
+
+#     # Register update listener
+#     entry.async_on_unload(entry.add_update_listener(_async_update_listener))
+#     # Store connector for later use
+#     entry.runtime_data = connector
+
+#     # Forward setup to platforms
+#     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+
+#     return True
+
+
+# @callback
+# def _import_options_if_missing(hass: HomeAssistant, entry: ConfigEntry):
+#     """Ensure fallback option is set and valid."""
+#     options = dict(entry.options)
+#     if CONF_FALLBACK not in options:
+#         options[CONF_FALLBACK] = entry.data.get(CONF_FALLBACK, CONST_OVERLAY_TADO_DEFAULT)
+#         hass.config_entries.async_update_entry(entry, options=options)
+
+#     fallback_value = options[CONF_FALLBACK]
+#     if fallback_value not in CONST_OVERLAY_TADO_OPTIONS:
+#         if fallback_value:
+#             options[CONF_FALLBACK] = CONST_OVERLAY_TADO_MODE
+#         else:
+#             options[CONF_FALLBACK] = CONST_OVERLAY_MANUAL
+#         hass.config_entries.async_update_entry(entry, options=options)
+
+
+# async def _async_update_listener(hass: HomeAssistant, entry: ConfigEntry) -> None:
+#     """Handle options update by reloading entry."""
+#     await hass.config_entries.async_reload(entry.entry_id)
+
+
+# async def async_unload_entry(hass: HomeAssistant, entry: TadoConfigEntry) -> bool:
+#     """Unload a config entry."""
+#     return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)

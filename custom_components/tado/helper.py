@@ -75,14 +75,14 @@ def decide_overlay_mode(
 # )
 
 
-# def decide_overlay_mode(
+
 #     tado: TadoConnector,
 #     duration: Optional[int],
 #     zone_id: int,
 #     overlay_mode: Optional[str] = None,
 # ) -> str:
 #     """Determine the correct overlay mode based on input and defaults."""
-#     # Use timer if duration is specified
+
 #     if duration:
 #         return CONST_OVERLAY_TIMER
 
@@ -105,7 +105,6 @@ def decide_overlay_mode(
 #     zone_id: int,
 #     overlay_mode: Optional[str] = None,
 # ) -> Optional[int]:
-#     """Determine the correct duration based on overlay mode and tado config."""
 #     if overlay_mode == CONST_OVERLAY_TIMER and duration is None:
 #         zone_data = tado.data["zone"].get(zone_id, {})
 #         default_duration = zone_data.get("default_overlay_termination_duration")
@@ -125,7 +124,6 @@ def decide_overlay_mode(
 # ) -> Optional[List[str]]:
 #     """Return list of supported fan modes or None if none supported."""
 #     supported_fanmodes = [
-#         tado_to_ha_mapping.get(option)
 #         for option in options
 #         if tado_to_ha_mapping.get(option) is not None
 #     ]

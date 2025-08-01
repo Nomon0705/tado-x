@@ -51,7 +51,7 @@ def decide_overlay_mode(
 #     return duration
 
 
-# def generate_supported_fanmodes(tado_to_ha_mapping: dict[str, str], options: list[str]):
+
 #     """Return correct list of fan modes or None."""
 #     supported_fanmodes = [
 #         tado_to_ha_mapping.get(option)
@@ -73,7 +73,6 @@ def decide_overlay_mode(
 #     CONST_OVERLAY_TADO_MODE,
 #     CONST_OVERLAY_TIMER,
 # )
-# from .tado_connector import TadoConnector
 
 
 # def decide_overlay_mode(
@@ -88,7 +87,7 @@ def decide_overlay_mode(
 #         return CONST_OVERLAY_TIMER
 
 #     # Use provided overlay_mode or fallback to default
-#     if overlay_mode is None:
+
 #         overlay_mode = tado.fallback or CONST_OVERLAY_TADO_MODE
 
 #     # If overlay_mode is default, look up zone-specific setting

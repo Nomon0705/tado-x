@@ -120,11 +120,9 @@ def decide_overlay_mode(
 
 # def generate_supported_fanmodes(
 #     tado_to_ha_mapping: Dict[str, str],
-#     options: List[str]
 # ) -> Optional[List[str]]:
 #     """Return list of supported fan modes or None if none supported."""
 #     supported_fanmodes = [
 #         for option in options
 #         if tado_to_ha_mapping.get(option) is not None
 #     ]
-#     return supported_fanmodes if supported_fanmodes else None

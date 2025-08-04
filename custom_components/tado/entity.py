@@ -1,5 +1,5 @@
 """Base class for Tado entity."""
-
+##add the description for the entity.py file
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity import Entity
 

@@ -126,3 +126,11 @@ def decide_overlay_mode(
 #         for option in options
 #         if tado_to_ha_mapping.get(option) is not None
 #     ]
+
+# """Helper methods for Tado."""
+
+# from typing import Optional, List, Dict
+#     CONST_OVERLAY_TADO_DEFAULT,
+#     CONST_OVERLAY_TADO_MODE,
+#     CONST_OVERLAY_TIMER,
+# )

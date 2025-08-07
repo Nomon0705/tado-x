@@ -124,13 +124,3 @@ def decide_overlay_mode(
 #     """Return list of supported fan modes or None if none supported."""
 #     supported_fanmodes = [
 #         for option in options
-#         if tado_to_ha_mapping.get(option) is not None
-#     ]
-
-# """Helper methods for Tado."""
-
-# from typing import Optional, List, Dict
-#     CONST_OVERLAY_TADO_DEFAULT,
-#     CONST_OVERLAY_TADO_MODE,
-#     CONST_OVERLAY_TIMER,
-# )
